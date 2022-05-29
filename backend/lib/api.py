@@ -1,16 +1,16 @@
 from flask import Blueprint, request,abort,jsonify
 from lib.vsr1000 import *
 
-api = Blueprint('api', __name__)
+bp = Blueprint('api', __name__)
 router = VSR1000("host", "port", "user", "pass")
 
 
-@api.route('/',methods=['GET'])
+@bp.route('/',methods=['GET'])
 def list_loopback():
-    router.list_loopback()
+    #router.list_loopback()
     return jsonify({"result": "ok", "message": "list loopback"})
 
-@api.route('/loopback/add',methods=['POST'])
+@bp.route('/loopback/add',methods=['POST'])
 def add_loopback():
     data = request.get_json()
     if "id" in data and "ip" in data:
@@ -21,7 +21,7 @@ def add_loopback():
     else:
         abort(500)
 
-@api.route('/loopback/del',methods=['POST'])
+@bp.route('/loopback/del',methods=['POST'])
 def del_loopback():
     data = request.get_json()
     if "id" in data and "ip" in data:
