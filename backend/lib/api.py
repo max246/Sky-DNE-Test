@@ -8,7 +8,9 @@ router = VSR1000("host", "port", "user", "pass")
 @api.route('/',methods=['GET'])
 def list_loopback():
     router.list_loopback()
-    return jsonify({"result": "ok", "message": "list loopback"})
+    response =  jsonify({"result": "ok", "message": "list loopback", "list": [ ["id", "ip"]]})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 @api.route('/loopback/add',methods=['POST'])
 def add_loopback():
@@ -17,7 +19,9 @@ def add_loopback():
         id = data['id']
         ip = data['ip']
         router.add_loopback(id, ip)
-        return jsonify({"result": "ok", "message":"add loopback"})
+        response =  jsonify({"result": "ok", "message":"add loopback"})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
     else:
         abort(500)
 
@@ -28,6 +32,8 @@ def del_loopback():
         id = data['id']
         ip = data['ip']
         router.del_loopback(id, ip)
-        return jsonify({"result":"ok", "message": "del loopback"})
+        response = jsonify({"result":"ok", "message": "del loopback"})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
     else:
         abort(500)
