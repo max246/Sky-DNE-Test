@@ -4,10 +4,9 @@ from lib.vsr1000 import *
 api = Blueprint('api', __name__)
 router = VSR1000("host", "port", "user", "pass")
 
-
 @api.route('/',methods=['GET'])
 def list_loopback():
-    router.list_loopback()
+    result = router.list_loopback()
     return jsonify({"result": "ok", "message": "list loopback"})
 
 @api.route('/loopback/add',methods=['POST'])
@@ -16,8 +15,11 @@ def add_loopback():
     if "id" in data and "ip" in data:
         id = data['id']
         ip = data['ip']
-        router.add_loopback(id, ip)
-        return jsonify({"result": "ok", "message":"add loopback"})
+        result = router.add_loopback(id, ip)
+        if result is None:
+            abort(400)
+        else:
+            return jsonify({"result": "ok", "message":"add loopback"})
     else:
         abort(500)
 
@@ -27,7 +29,10 @@ def del_loopback():
     if "id" in data and "ip" in data:
         id = data['id']
         ip = data['ip']
-        router.del_loopback(id, ip)
-        return jsonify({"result":"ok", "message": "del loopback"})
+        result = router.del_loopback(id, ip)
+        if result is None:
+            abort(400)
+        else:
+            return jsonify({"result":"ok", "message": "del loopback"})
     else:
         abort(500)
