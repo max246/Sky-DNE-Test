@@ -17,11 +17,11 @@ def add_loopback():
         ip = data['ip']
         result = router.add_loopback(id, ip)
         if result is None:
-            abort(400)
+            abort(400, description='Not able to add to netconf')
         else:
             return jsonify({"result": "ok", "message":"add loopback"})
     else:
-        abort(500)
+        abort(500, description='Missing ID and IP in header')
 
 @api.route('/loopback/del',methods=['POST'])
 def del_loopback():
@@ -31,8 +31,8 @@ def del_loopback():
         ip = data['ip']
         result = router.del_loopback(id, ip)
         if result is None:
-            abort(400)
+            abort(400, description='Not able to delete to netconf')
         else:
             return jsonify({"result":"ok", "message": "del loopback"})
     else:
-        abort(500)
+        abort(500, description='Missing ID and IP in header')
